@@ -1,0 +1,4 @@
+name: BlatCyborg
+version: '${project.version}'
+main: ru.blatfan.blatcyborg.BlatCyborg
+api-version: '1.16'
