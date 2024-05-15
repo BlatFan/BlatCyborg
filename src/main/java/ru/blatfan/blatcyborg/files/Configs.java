@@ -33,19 +33,21 @@ public class Configs {
         messages.addDefault("commands.error", "{PREFIX} §cThe command was entered incorrectly");
         messages.addDefault("commands.no_permission", "{PREFIX} §cYou don't have enough permissions to use this command");
         messages.addDefault("commands.reload", "{PREFIX} §aPlugin reloaded");
+        messages.addDefault("commands.set", "{PREFIX} §aImplant added");
         
         messages.copyDefault(true);
         messages.save();
         
         BlatCyborg.getInstance().setPrefix(Configs.getMessages().getString("prefix"));
         
-        implantsConfig=new BaseConfig(bc, "implants.yml", true);
+        implantsConfig=new BaseConfig(bc, "implants.yml");
         
         Implant.addImplant(new Implant("Bio Eyes", null, true, "eyes", "minecraft", Material.SPIDER_EYE.name(), 0, new ArrayList<>(), "blatcyborg.implants.default"));
         Implant.addImplant(new Implant("Bio Arms", null, true, "arms", "minecraft", Material.IRON_PICKAXE.name(), 0, new ArrayList<>(), "blatcyborg.implants.default"));
         Implant.addImplant(new Implant("Bio Body", null, true, "body", "minecraft", Material.BARREL.name(), 0, new ArrayList<>(), "blatcyborg.implants.default"));
         Implant.addImplant(new Implant("Bio Skin", null, true, "skin", "minecraft", Material.IRON_INGOT.name(), 0, new ArrayList<>(), "blatcyborg.implants.default"));
         Implant.addImplant(new Implant("Bio Legs", null, true, "legs", "minecraft", Material.STICK.name(), 0, new ArrayList<>(), "blatcyborg.implants.default"));
+        Implant.addImplant(new Implant("Cyber Legs", Arrays.asList("Cybernetic Legs"), true, "legs", "minecraft", Material.STICK.name(), 0, new ArrayList<>(), "blatcyborg.implants.cyber_legs"));
         
         
         implantsConfig.copyDefault(true);

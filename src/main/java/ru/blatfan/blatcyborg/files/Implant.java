@@ -2,6 +2,7 @@ package ru.blatfan.blatcyborg.files;
 
 import lombok.Getter;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ru.blatfan.blatcyborg.BlatCyborg;
@@ -46,13 +47,14 @@ public class Implant {
         List<String> implants = imConfig.getStringList("implants");
         String id = implant.getId();
         
-        if (Configs.getImplantsConfig().getStringList("implants").contains(id)) {
-            if(Configs.getConfig().getBoolean("debug")) BlatCyborg.getInstance().getConsole().warn("[LOADER] The implant with the ID: '"+id+"' has already been registered");
-            return;
-        }
+        if (!Configs.getImplantsConfig().getStringList("implants").contains(id)) {
+            implants.add(id);
+            imConfig.set("implants", implants);
+        } else
+            if(Configs.getConfig().getBoolean("debug"))
+                BlatCyborg.getInstance().getConsole().warn("[LOADER] The implant with the ID: '"+id+"' has already been registered");
         
-        implants.add(id);
-        imConfig.set("implants", implants);
+        
         
         setImplant(implant);
     }
@@ -88,7 +90,14 @@ public class Implant {
                 config.getRawStringList(id+".effects"),
                 config.getRawString(id+".permission")
             );
-        return new Implant("UNKNOWN", Arrays.asList("UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN"), false, "eyes", "minecraft", Material.BARRIER.name(), 0, new ArrayList<>(), "unknown");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add("UNKNOWN");
+        lore.add("UNKNOWN");
+        lore.add("UNKNOWN");
+        lore.add("UNKNOWN");
+        lore.add("UNKNOWN");
+        lore.add("UNKNOWN");
+        return new Implant("UNKNOWN", lore, true, "eyes", "minecraft", Material.BARRIER.name(), 0, new ArrayList<>(), "unknown");
     }
     private ItemStack getRawItem(){
         if(icon_type == "itemsadder") {
@@ -96,6 +105,7 @@ public class Implant {
             ItemMeta meta = item1.getItemMeta();
             if(meta == null)
                 return item1;
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,ItemFlag.HIDE_DESTROYS,ItemFlag.HIDE_DYE,ItemFlag.HIDE_ENCHANTS,ItemFlag.HIDE_PLACED_ON,ItemFlag.HIDE_POTION_EFFECTS,ItemFlag.HIDE_UNBREAKABLE);
             meta.setDisplayName(name);
             if(description!=null)meta.setLore(description);
             item1.setItemMeta(meta);
@@ -107,6 +117,7 @@ public class Implant {
             ItemMeta meta = item2.getItemMeta();
             if(meta == null)
                 return item2;
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,ItemFlag.HIDE_DESTROYS,ItemFlag.HIDE_DYE,ItemFlag.HIDE_ENCHANTS,ItemFlag.HIDE_PLACED_ON,ItemFlag.HIDE_POTION_EFFECTS,ItemFlag.HIDE_UNBREAKABLE);
             meta.setCustomModelData(icon_model_data);
             meta.setDisplayName(name);
             if(description!=null)meta.setLore(description);

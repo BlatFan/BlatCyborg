@@ -3,7 +3,10 @@ package ru.blatfan.blatcyborg;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginDescriptionFile;
+import ru.blatfan.blatcyborg.events.ImplantSetEvent;
 import ru.blatfan.blatcyborg.files.Configs;
+import ru.blatfan.blatcyborg.files.DataFile;
+import ru.blatfan.blatcyborg.files.Implant;
 import ru.blatfan.blatcyborg.files.Permissions;
 import ru.blatfan.blatcyborg.gui.CheatImplantsMenu;
 import ru.blatfan.blatlibs.commandframework.Command;
@@ -34,6 +37,19 @@ public class Commands {
         else arg.sendMessage(Configs.getMessages().getString("commands.no_permission").replace("{PREFIX}", Configs.getMessages().getString("prefix")));
     }
     @Command(
+        name = "blatcyborg.set"
+    )
+    public void blatcyborgSetCommand(CommandArguments arg){
+        if (arg.hasPermission(Permissions.set) && arg.isSenderPlayer()) {
+            String id = arg.getArgument(1);
+            arg.sendMessage(id);
+            BlatCyborg.getData().setPlayerImplant(arg.getSender(), Implant.getImplant(id));
+            arg.sendMessage(Configs.getMessages().getString("commands.set"));
+            BlatCyborg.getInstance().getServer().getPluginManager().callEvent(new ImplantSetEvent(Implant.getImplant(id), arg.getSender()));
+        }
+        else arg.sendMessage(Configs.getMessages().getString("commands.no_permission").replace("{PREFIX}", Configs.getMessages().getString("prefix")));
+    }
+    @Command(
         name = "blatcyborg.reload"
     )
     public void blatcyborgReloadCommand(CommandArguments arg){
@@ -49,8 +65,13 @@ public class Commands {
     public List<String> blatcyborgTabs(CommandArguments arg){
         List<String> tabs = new ArrayList<>();
         if(arg.getLength()==1){
-            if(arg.hasPermission(Permissions.cheatMenu)) tabs.add("cheat");
             if(arg.hasPermission(Permissions.reload)) tabs.add("reload");
+            if(arg.hasPermission(Permissions.cheatMenu)) tabs.add("cheat");
+            if(arg.hasPermission(Permissions.set)) tabs.add("set");
+        }
+        if(arg.getLength()==2 && arg.getArgument(0)=="set"){
+            for (Implant implant : BlatCyborg.getImplants())
+                tabs.add(implant.getId());
         }
         
         

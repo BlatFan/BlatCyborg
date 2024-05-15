@@ -9,7 +9,7 @@ public class DataFile extends BaseConfig {
         super(BlatCyborg.getInstance(), "data.yml");
     }
     
-    public void setPlayerImplant(Player player, Implant implant, boolean b){
+    public void setPlayerImplant(Player player, Implant implant){
         set(player.getUniqueId().toString()+"."+implant.getType(), implant.getId());
         save();
     }
